@@ -54,6 +54,20 @@ Le screener permet de filtrer les actions des indices suivants :
 - Export des résultats en CSV et Excel
 - Mise à jour automatique des données
 
+### Visualisations avancées
+
+Le module de visualisation intégré permet de générer des graphiques interactifs pour faciliter l'analyse :
+
+- **Factor Scores** : Visualisation des scores Momentum, Quality et Combined pour les meilleures actions
+- **Sector Distribution** : Analyse de la répartition sectorielle des actions sélectionnées
+- **Factor Heatmap** : Carte de chaleur positionnant les actions selon leurs scores Quality et Momentum
+- **Performance Comparison** : Comparaison des performances historiques des actions sélectionnées vs benchmark
+- **Rolling Correlations** : Analyse des corrélations roulantes avec un indice de référence
+- **Metric Comparison** : Comparaison des métriques fondamentales entre différentes actions
+- **Score Distributions** : Visualisation de la distribution statistique des scores
+
+Ces visualisations sont disponibles en versions interactives (Plotly) et statiques (Matplotlib).
+
 ## Architecture du projet
 
 ```
@@ -72,10 +86,13 @@ evidence-based-stock-screener/
 │   │   ├── filters.py     # Filtres avancés
 │   │   └── scoring.py     # Système de scoring des actions
 │   └── visualization/     # Outils de visualisation des résultats
+│       └── chart_generator.py  # Générateur de graphiques interactifs et statiques
 ├── notebooks/             # Notebooks Jupyter pour l'analyse exploratoire
+│   └── screener_visualization_demo.ipynb  # Démonstration des visualisations
 ├── config/                # Fichiers de configuration
 ├── tests/                 # Tests unitaires et d'intégration
 └── reports/               # Rapports générés et résultats d'analyse
+    └── visualizations/    # Graphiques exportés
 ```
 
 ## Installation
@@ -92,6 +109,8 @@ pip install -r requirements.txt
 ```
 
 ## Utilisation
+
+### Utilisation basique
 
 ```python
 from src.screener import StockScreener
@@ -114,6 +133,50 @@ print(top_stocks)
 # Exporter les résultats
 screener.export_results("top_stocks.xlsx")
 ```
+
+### Utilisation avec visualisations
+
+```python
+from src.screener import StockScreener
+from src.visualization import ChartGenerator
+
+# Initialiser le screener et calculer les scores
+screener = StockScreener()
+screener.load_index_data("SP500")
+screener.calculate_scores()
+top_stocks = screener.get_top_stocks(n=20)
+
+# Initialiser le générateur de graphiques
+chart_gen = ChartGenerator(output_dir='reports/visualizations')
+
+# Créer diverses visualisations
+# Visualisation des scores
+scores_fig = chart_gen.plot_factor_scores(
+    scores_df=screener.combined_scores,
+    top_n=15,
+    interactive=True  # Utiliser Plotly pour des graphiques interactifs
+)
+
+# Visualisation de la distribution sectorielle
+sector_fig = chart_gen.plot_sector_distribution(
+    scores_df=top_stocks,
+    top_n=30
+)
+
+# Comparaison des performances
+perf_fig = chart_gen.plot_performance_comparison(
+    price_data=screener.price_data,
+    tickers=top_stocks.index.tolist()[:5],
+    benchmark_ticker='SPY'
+)
+
+# Afficher les graphiques (dans un notebook Jupyter)
+scores_fig.show()
+sector_fig.show()
+perf_fig.show()
+```
+
+Pour un exemple complet d'utilisation des visualisations, consultez le notebook `notebooks/screener_visualization_demo.ipynb`.
 
 ## Sources de données
 

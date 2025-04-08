@@ -1,0 +1,74 @@
+{
+  "indices": {
+    "SP500": {
+      "source": "yahoo",
+      "symbol": "^GSPC",
+      "components_source": "wikipedia"
+    },
+    "NASDAQ": {
+      "source": "yahoo",
+      "symbol": "^IXIC",
+      "components_source": "nasdaq_api"
+    },
+    "EUROSTOXX": {
+      "source": "yahoo",
+      "symbol": "^STOXX",
+      "components_source": "csv",
+      "components_file": "data/raw/eurostoxx_components.csv"
+    },
+    "MSCI_WORLD_TECH": {
+      "source": "yahoo",
+      "symbol": "^DWCT",
+      "components_source": "api",
+      "components_endpoint": "msci_components"
+    }
+  },
+  "factors": {
+    "momentum": {
+      "short_term_window": 63,
+      "medium_term_window": 126,
+      "long_term_window": 252,
+      "earnings_revision_weight": 0.3,
+      "price_momentum_weight": 0.7,
+      "ca_revisions_weight": 0.15,
+      "business_model_visibility_weight": 0.1,
+      "analyst_dispersion_factor": 0.05
+    },
+    "quality": {
+      "min_roe": 12,
+      "min_roce": 10,
+      "max_debt_to_equity": 1.2,
+      "min_profit_margin": 7,
+      "margin_volatility_weight": 0.2,
+      "results_history_weight": 0.15,
+      "future_visibility_weight": 0.25
+    }
+  },
+  "scoring": {
+    "momentum_weight": 0.5,
+    "quality_weight": 0.5,
+    "normalization_method": "minmax",
+    "ranking_method": "percentile"
+  },
+  "filters": {
+    "min_market_cap": 200000000,
+    "min_daily_volume": 750000,
+    "exclude_sectors": ["Financials"],
+    "max_pe_ratio": 45,
+    "min_return_1y": -15,
+    "max_volatility": 40
+  },
+  "visualization": {
+    "default_chart_type": "plotly",
+    "color_palette": "viridis",
+    "export_format": "png",
+    "default_width": 1200,
+    "default_height": 800
+  },
+  "data": {
+    "price_history_days": 365,
+    "update_frequency": "daily",
+    "cache_expiry_days": 7,
+    "fundamental_min_quarters": 12
+  }
+}

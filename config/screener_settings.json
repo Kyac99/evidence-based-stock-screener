@@ -5,22 +5,20 @@
       "symbol": "^GSPC",
       "components_source": "wikipedia"
     },
-    "NASDAQ": {
+    "NASDAQ100": {
       "source": "yahoo",
-      "symbol": "^IXIC",
-      "components_source": "nasdaq_api"
+      "symbol": "^NDX",
+      "components_source": "wikipedia"
     },
-    "EUROSTOXX": {
+    "EUROSTOXX50": {
       "source": "yahoo",
-      "symbol": "^STOXX",
-      "components_source": "csv",
-      "components_file": "data/raw/eurostoxx_components.csv"
+      "symbol": "^STOXX50E",
+      "components_source": "wikipedia"
     },
-    "MSCI_WORLD_TECH": {
+    "CAC40": {
       "source": "yahoo",
-      "symbol": "^DWCT",
-      "components_source": "api",
-      "components_endpoint": "msci_components"
+      "symbol": "^FCHI",
+      "components_source": "wikipedia"
     }
   },
   "factors": {
@@ -28,11 +26,11 @@
       "short_term_window": 63,
       "medium_term_window": 126,
       "long_term_window": 252,
-      "earnings_revision_weight": 0.3,
-      "price_momentum_weight": 0.7,
-      "ca_revisions_weight": 0.15,
-      "business_model_visibility_weight": 0.1,
-      "analyst_dispersion_factor": 0.05
+      "price_momentum_weight": 0.9,
+      "earnings_revision_weight": 0.1,
+      "ca_revisions_weight": 0.0,
+      "business_model_visibility_weight": 0.0,
+      "analyst_dispersion_factor": 0.0
     },
     "quality": {
       "min_roe": 12,
@@ -41,7 +39,7 @@
       "min_profit_margin": 7,
       "margin_volatility_weight": 0.2,
       "results_history_weight": 0.15,
-      "future_visibility_weight": 0.25
+      "future_visibility_weight": 0.0
     }
   },
   "scoring": {
@@ -54,21 +52,51 @@
     "min_market_cap": 200000000,
     "min_daily_volume": 750000,
     "exclude_sectors": ["Financials"],
-    "max_pe_ratio": 45,
-    "min_return_1y": -15,
-    "max_volatility": 40
+    "max_pe_ratio": 50,
+    "min_return_1y": -20,
+    "max_volatility": 45,
+    "min_liquidity": 500000
+  },
+  "momentum_technical": {
+    "use_sma": true,
+    "use_ema": true,
+    "use_rsi": true,
+    "use_macd": true,
+    "sma_short": 20,
+    "sma_medium": 50,
+    "sma_long": 200,
+    "rsi_period": 14,
+    "rsi_overbought": 70,
+    "rsi_oversold": 30,
+    "macd_fast": 12,
+    "macd_slow": 26,
+    "macd_signal": 9
+  },
+  "data_requirements": {
+    "minimum_price_history_days": 260,
+    "minimum_fundamental_quarters": 8,
+    "minimum_daily_volume": 100000,
+    "require_market_cap": true,
+    "require_pe_ratio": false,
+    "handle_missing_data": "fill_median"
   },
   "visualization": {
     "default_chart_type": "plotly",
     "color_palette": "viridis",
     "export_format": "png",
     "default_width": 1200,
-    "default_height": 800
+    "default_height": 800,
+    "transparent_background": true,
+    "interactive_html": true,
+    "show_grid": true
   },
   "data": {
     "price_history_days": 365,
     "update_frequency": "daily",
     "cache_expiry_days": 7,
-    "fundamental_min_quarters": 12
+    "fundamental_min_quarters": 8,
+    "use_adjusted_close": true,
+    "handle_missing_values": "interpolate",
+    "max_missing_percentage": 10
   }
 }

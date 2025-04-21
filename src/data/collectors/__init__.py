@@ -1,1 +1,3 @@
-# Data collectors from various sources
+"""
+Module pour les collecteurs de données.
+"""

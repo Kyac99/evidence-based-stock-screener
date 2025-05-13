@@ -1,196 +1,98 @@
 # Evidence-Based Stock Screener
 
-Un outil de sélection d'actions basé sur l'Evidence-Based Investing, se concentrant sur les facteurs **Quality** et **Momentum** pour identifier les opportunités d'investissement à travers différents indices mondiaux.
+Ce projet est un screener d'actions basé sur les facteurs Quality et Momentum pour sélectionner les meilleurs actifs à travers différents indices mondiaux (S&P 500, NASDAQ, MSCI World, Euro Stoxx 50).
 
-## Présentation
+## Description
 
-Ce screener s'appuie sur des recherches scientifiques ayant prouvé la pertinence de certaines stratégies d'investissement sur le long terme. L'approche Evidence-Based Investing permet de rationaliser le processus d'investissement en s'appuyant sur des facteurs qui ont démontré leur efficacité à travers le temps.
-
-### Facteurs de sélection
-
-#### Facteur Momentum
-
-Le momentum combine deux dimensions :
-
-1. **Momentum Technique** : 
-   - Tendance haussière du titre à court terme (1-3 mois)
-   - Tendance haussière à moyen terme (6 mois)
-   - Tendance haussière à long terme (12 mois)
-
-2. **Momentum Fondamental** :
-   - Révisions des bénéfices par les analystes
-   - Révisions du chiffre d'affaires
-   - Pondération selon la visibilité du business model
-   - Prise en compte de la dispersion des estimations des analystes
-
-#### Facteur Quality
-
-Le facteur qualité privilégie les sociétés ayant :
-
-- Profitabilité positive 
-- Rentabilité élevée (ROE, ROCE, etc.)
-- Bilan comptable sain (faible endettement)
-- Faible volatilité des marges
-- Historique de qualité en matière de publication de résultats
-- Bonne visibilité sur les résultats futurs
-
-## Indices analysés
-
-Le screener permet de filtrer les actions des indices suivants :
-
-- Nasdaq
-- S&P 500
-- Eurostoxx
-- Indices small et mid cap européennes
-- MSCI World Tech
-- Et d'autres indices configurables
+Le screener utilise l'API Alpha Vantage pour récupérer les données financières et de prix des actions. Le projet est structuré pour collecter, traiter et analyser les données de manière efficace, en permettant d'appliquer des filtres basés sur des facteurs de qualité (fondamentaux) et de momentum (technique).
 
 ## Fonctionnalités
 
-- Calcul de scores Momentum et Quality pour chaque action
-- Classement des actions selon un score combiné personnalisable
-- Filtres avancés pour affiner la sélection
-- Visualisation des tendances et performances des actions sélectionnées
-- Export des résultats en CSV et Excel
-- Mise à jour automatique des données
+- Collecte de données pour les composantes des principaux indices boursiers
+- Récupération des données de prix et des données fondamentales via l'API Alpha Vantage
+- Traitement des données pour calculer différentes métriques et indicateurs
+- Combinaison des données de prix et fondamentales
+- Filtrage des actions selon des critères de qualité et de momentum
+- Sauvegarde et chargement des données traitées
 
-### Visualisations avancées
-
-Le module de visualisation intégré permet de générer des graphiques interactifs pour faciliter l'analyse :
-
-- **Factor Scores** : Visualisation des scores Momentum, Quality et Combined pour les meilleures actions
-- **Sector Distribution** : Analyse de la répartition sectorielle des actions sélectionnées
-- **Factor Heatmap** : Carte de chaleur positionnant les actions selon leurs scores Quality et Momentum
-- **Performance Comparison** : Comparaison des performances historiques des actions sélectionnées vs benchmark
-- **Rolling Correlations** : Analyse des corrélations roulantes avec un indice de référence
-- **Metric Comparison** : Comparaison des métriques fondamentales entre différentes actions
-- **Score Distributions** : Visualisation de la distribution statistique des scores
-
-Ces visualisations sont disponibles en versions interactives (Plotly) et statiques (Matplotlib).
-
-## Architecture du projet
+## Structure du projet
 
 ```
 evidence-based-stock-screener/
-├── data/                  # Stockage des données
-│   ├── raw/               # Données brutes téléchargées
-│   └── processed/         # Données traitées et prêtes à l'analyse
-├── src/                   # Code source
-│   ├── data/              # Modules de collecte et traitement des données
-│   │   ├── collectors/    # Collecteurs de données pour différentes sources
-│   │   └── processors/    # Traitement des données brutes
-│   ├── factors/           # Calcul des facteurs d'investissement
-│   │   ├── momentum.py    # Calcul des métriques de momentum
-│   │   └── quality.py     # Calcul des métriques de qualité
-│   ├── screener/          # Logique du screener
-│   │   ├── filters.py     # Filtres avancés
-│   │   └── scoring.py     # Système de scoring des actions
-│   └── visualization/     # Outils de visualisation des résultats
-│       └── chart_generator.py  # Générateur de graphiques interactifs et statiques
-├── notebooks/             # Notebooks Jupyter pour l'analyse exploratoire
-│   └── screener_visualization_demo.ipynb  # Démonstration des visualisations
-├── config/                # Fichiers de configuration
-├── tests/                 # Tests unitaires et d'intégration
-└── reports/               # Rapports générés et résultats d'analyse
-    └── visualizations/    # Graphiques exportés
+├── data/                    # Répertoire pour stocker les données
+│   ├── raw/                 # Données brutes récupérées des APIs
+│   └── processed/           # Données traitées et prêtes à l'emploi
+├── logs/                    # Logs d'exécution
+├── src/                     # Code source
+│   ├── data/                # Module de gestion des données
+│   │   ├── collectors/      # Collecteurs de données
+│   │   │   ├── index_collector.py       # Récupération des composantes des indices
+│   │   │   ├── price_collector.py       # Récupération des données de prix
+│   │   │   └── fundamental_collector.py # Récupération des données fondamentales
+│   │   ├── processors/      # Processeurs de données
+│   │   │   └── data_processor.py        # Traitement et formatage des données
+│   │   ├── constants.py     # Constantes pour le module de données
+│   │   └── utils.py         # Fonctions utilitaires
+│   ├── factors/             # Module pour les facteurs de sélection
+│   ├── screener/            # Module de filtrage des actions
+│   └── visualization/       # Module de visualisation des résultats
+└── main.py                  # Script principal
 ```
+
+## Prérequis
+
+- Python 3.8 ou supérieur
+- Clé API Alpha Vantage (obtenir sur [alphavantage.co](https://www.alphavantage.co/))
 
 ## Installation
 
-```bash
-# Cloner le dépôt
-git clone https://github.com/Kyac99/evidence-based-stock-screener.git
-cd evidence-based-stock-screener
+1. Clonez ce dépôt :
+   ```
+   git clone https://github.com/Kyac99/evidence-based-stock-screener.git
+   cd evidence-based-stock-screener
+   ```
 
-# Installer les dépendances
-pip install -r requirements.txt
+2. Installez les dépendances :
+   ```
+   pip install -r requirements.txt
+   ```
 
-# Configuration des API (voir instructions dans config/README.md)
-```
+3. Configuration de l'API Alpha Vantage :
+   ```
+   export ALPHA_VANTAGE_API_KEY=votre_clé_api
+   ```
+   Ou sous Windows :
+   ```
+   set ALPHA_VANTAGE_API_KEY=votre_clé_api
+   ```
 
 ## Utilisation
 
-### Utilisation basique
+### Collection de données
 
-```python
-from src.screener import StockScreener
-
-# Initialiser le screener
-screener = StockScreener()
-
-# Charger les données pour un indice spécifique
-screener.load_index_data("SP500")
-
-# Calculer les scores pour chaque action
-screener.calculate_scores()
-
-# Obtenir les N meilleures actions selon les critères
-top_stocks = screener.get_top_stocks(n=20)
-
-# Afficher les résultats
-print(top_stocks)
-
-# Exporter les résultats
-screener.export_results("top_stocks.xlsx")
+```
+python main.py --index SP500 --limit 10 --api_key YOUR_API_KEY
 ```
 
-### Utilisation avec visualisations
+Arguments :
+- `--index` : Indice à traiter (SP500, NASDAQ, MSCIWORLD, EUROSTOXX)
+- `--limit` : Nombre maximum de titres à traiter (optionnel)
+- `--api_key` : Clé API Alpha Vantage (si non définie dans les variables d'environnement)
 
-```python
-from src.screener import StockScreener
-from src.visualization import ChartGenerator
+### Limites à considérer
 
-# Initialiser le screener et calculer les scores
-screener = StockScreener()
-screener.load_index_data("SP500")
-screener.calculate_scores()
-top_stocks = screener.get_top_stocks(n=20)
+- L'API gratuite d'Alpha Vantage limite les requêtes à 5 par minute et 500 par jour.
+- Le traitement des données de l'ensemble des titres d'un indice peut prendre du temps.
+- Pour les tests initiaux, il est recommandé d'utiliser l'argument `--limit` pour limiter le nombre de titres.
 
-# Initialiser le générateur de graphiques
-chart_gen = ChartGenerator(output_dir='reports/visualizations')
+## Développement futur
 
-# Créer diverses visualisations
-# Visualisation des scores
-scores_fig = chart_gen.plot_factor_scores(
-    scores_df=screener.combined_scores,
-    top_n=15,
-    interactive=True  # Utiliser Plotly pour des graphiques interactifs
-)
-
-# Visualisation de la distribution sectorielle
-sector_fig = chart_gen.plot_sector_distribution(
-    scores_df=top_stocks,
-    top_n=30
-)
-
-# Comparaison des performances
-perf_fig = chart_gen.plot_performance_comparison(
-    price_data=screener.price_data,
-    tickers=top_stocks.index.tolist()[:5],
-    benchmark_ticker='SPY'
-)
-
-# Afficher les graphiques (dans un notebook Jupyter)
-scores_fig.show()
-sector_fig.show()
-perf_fig.show()
-```
-
-Pour un exemple complet d'utilisation des visualisations, consultez le notebook `notebooks/screener_visualization_demo.ipynb`.
-
-## Sources de données
-
-Le screener utilise plusieurs sources de données pour ses analyses :
-
-- Données de prix historiques (Yahoo Finance, Alpha Vantage)
-- Données fondamentales (Financial Modeling Prep, SimFin)
-- Estimations des analystes (Refinitiv, FactSet)
-- Ratios financiers (QuandL, Morningstar)
+- Implémentation des facteurs de filtrage Quality et Momentum
+- Création d'un système de scoring pour les actions
+- Mise en place de tests unitaires
+- Ajout de visualisations pour l'analyse des résultats
+- Optimisation de la collecte de données avec des mécanismes de cache
 
 ## Licence
 
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
-
-## Avertissement
-
-Ce screener est un outil d'aide à la décision et ne constitue pas une recommandation d'investissement. Les performances passées ne préjugent pas des performances futures.
+Ce projet est sous licence MIT.
